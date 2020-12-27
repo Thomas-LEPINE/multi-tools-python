@@ -35,7 +35,7 @@ def exit():
        window.destroy()
 
 # Options de la fenêtre
-windowOptions = {'width':950, 'height':700, 'background':"#004875"}
+windowOptions = {'width':850, 'height':500, 'background':"#004875"}
 
 # SETUP : ---------------------------------------------
 window = Tk()
@@ -43,7 +43,7 @@ window.title('Tool : Image to PDF')
 window.iconbitmap("./assets/logo_alligator_news_ico.ico")
 window.config(background=windowOptions['background'])
 window.geometry(str(windowOptions['width']) + "x" + str(windowOptions['height']))
-window.minsize(480, 500)
+window.minsize(800, 500)
 ####### ---------------------------------------------
 
 #Création de la "boîte" frame
@@ -82,12 +82,19 @@ headerFrame.grid(row=0, column=0, sticky=N)
 #Boutons ---------------------------------------------
 butonsFrame = Frame(canvas, background = windowOptions['background'])
 
-getFileButton = Button(butonsFrame, text="        Fichier(s)        ", command=getFiles, background='#E8927C', fg='black', font=('Ebrima', 14, 'bold'))
+getFileButton = Button(butonsFrame, text='        Fichier(s)        ', command=getFiles, background='#E8927C', fg='black', font=('Ebrima', 14, 'bold'))
 getFileButton.pack(pady=windowOptions['height']/20)
 convertButton = Button(butonsFrame, text='   Convertion en PDF   ', command=convertToPdf, background='#0B8000', fg='black', font=('Ebrima', 14, 'bold'))
 convertButton.pack(pady=windowOptions['height']/80)
-exitButton = Button (butonsFrame, text='   Quitter   ', command=exit, background='#CD010D', fg='white', font=('Ebrima', 16, 'bold'))
-exitButton.pack(pady=windowOptions['height']/10)
+
+bottomButonsFrame = Frame(butonsFrame, background = windowOptions['background'])
+helpButton = Button (bottomButonsFrame, text='   AIDE   ', command=exit, background='#CD010D', fg='white', font=('Ebrima', 16, 'bold'))
+helpButton.grid(row=0, column=0, sticky=W)
+
+exitButton = Button (bottomButonsFrame, text='   Quitter   ', command=exit, background='#CD010D', fg='white', font=('Ebrima', 16, 'bold'))
+exitButton.grid(row=0, column=2, sticky=E)
+bottomButonsFrame.pack(pady=windowOptions['height']/20)
+
 butonsFrame.grid(row=2, column=0, sticky=S)
 ####### ---------------------------------------------
 
