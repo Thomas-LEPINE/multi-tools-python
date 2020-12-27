@@ -35,7 +35,7 @@ def exit():
        window.destroy()
 
 # Options de la fenêtre
-windowOptions = {'width':800, 'height':600, 'background':"#004875"}
+windowOptions = {'width':950, 'height':700, 'background':"#004875"}
 
 # SETUP : ---------------------------------------------
 window = Tk()
@@ -50,24 +50,34 @@ window.minsize(480, 500)
 canvas = Frame(window, background = windowOptions['background'])
 ####### ---------------------------------------------
 
-#Titre ---------------------------------------------
-titreFrame = Frame(canvas, background = windowOptions['background'])
-
-titre = Label(titreFrame, text='Outil de convertion\n~ Image(s) -> PDF ~', background='#C8C8C8', font=('Ink Free', 30, 'bold'), fg='#000')
-titre.pack(pady=windowOptions['height']/10)
-titreFrame.grid(row=0, column=0, sticky=S)
-####### ---------------------------------------------
-
-#Image ---------------------------------------------
-imageFrame = Frame(canvas, background = windowOptions['background'])
+########### HEADER
+headerFrame = Frame(canvas, background = windowOptions['background'])
 width = 200
 height = 100
-image = PhotoImage(file="./assets/alli.png").zoom(1).subsample(4)
+#Image ---------------------------------------------
+imageFrame = Frame(headerFrame, background = windowOptions['background'])
+image = PhotoImage(file="./assets/alli.png").zoom(2).subsample(10)
 imageCanvas = Canvas(imageFrame, width=width, height=height, background = windowOptions['background'], border=0, highlightthickness=0)
 imageCanvas.create_image(width/2, height/2, image=image)
-imageCanvas.pack(pady=windowOptions['height']/40)
-imageFrame.grid(row=1, column=0, sticky=W, pady=windowOptions['height']/50)
+imageCanvas.pack()
+imageFrame.grid(row=0, column=0, sticky=N)
+####### --------------------------------------------
+#Titre ---------------------------------------------
+titreFrame = Frame(headerFrame, background = windowOptions['background'])
+titre = Label(titreFrame, text='Outil de convertion\n~ Image(s) -> PDF ~', background='#C8C8C8', font=('Ink Free', 30, 'bold'), fg='#000')
+titre.pack()
+titreFrame.grid(row=0, column=1, sticky=N)
+####### --------------------------------------------
+#Image ---------------------------------------------
+imageFrame2 = Frame(headerFrame, background = windowOptions['background'])
+image2 = PhotoImage(file="./assets/alli.png").zoom(2).subsample(10)
+imageCanvas2 = Canvas(imageFrame2, width=width, height=height, background = windowOptions['background'], border=0, highlightthickness=0)
+imageCanvas2.create_image(width/2, height/2, image=image2)
+imageCanvas2.pack()
+imageFrame2.grid(row=0, column=2, sticky=N)
 ####### ---------------------------------------------
+headerFrame.grid(row=0, column=0, sticky=N)
+############## ---------------------------------------------
 
 #Boutons ---------------------------------------------
 butonsFrame = Frame(canvas, background = windowOptions['background'])
