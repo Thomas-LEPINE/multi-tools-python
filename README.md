@@ -1,8 +1,8 @@
 # multi-tools-python
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Issues][issues-shield]][issues-url]
+<!-- [![Contributors][contributors-shield]][contributors-url] -->
 [![LinkedIn - Thomas Lépine][linkedin-shield]][linkedin-url]
+[![Issues][issues-shield]][issues-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -15,9 +15,9 @@
 
   <p align="center">
     <br />
-    <a href="https://github.com/Thomas-LEPINE/multi-tools-python/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/Thomas-LEPINE/multi-tools-python/issues">Request Feature</a>
+    <a href="https://github.com/Thomas-LEPINE/multi-tools-python/labels/bug">Report Bug</a>
+    -
+    <a href="https://github.com/Thomas-LEPINE/multi-tools-python/labels/question">Request Feature</a>
   </p>
 </p>
 
@@ -36,11 +36,6 @@
 ## About
 
 to complete
-
-List :
-* 1
-* 2 :smile:
-
 
 ### Technology
 

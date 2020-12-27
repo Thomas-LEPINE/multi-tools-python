@@ -2,17 +2,20 @@
 #  Copyright : Thomas LÉPINE  (thomas.lep4@gmail.com)
 # ------------------------------------------------------
 
-from PIL import Image
-import tkinter as tk
+# import tkinter as tk
+# from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter import *
+from PIL import Image
+from PIL import ImageTk
 
 imageList = []
 
 ''' Récupère le/les fichiers : '''
 def getFiles ():
     global imageList
-    filePathImport = filedialog.askopenfilenames(parent=app, title='Choisissez un/des fichier(s)')
+    filePathImport = filedialog.askopenfilenames(parent=window, title='Choisissez un/des fichier(s)')
     lstFilePathImport = list(filePathImport) # Transformation de la liste de chaine en liste Python
     imageList = []
     for file in lstFilePathImport :
@@ -29,26 +32,54 @@ def convertToPdf ():
 def exit():
     msgBox = messagebox.askquestion('Quitter l\'application','Êtes-vous sûr et certain de vouloir quitter l\'application ?', icon = 'warning')
     if msgBox == 'yes':
-       app.destroy()
+       window.destroy()
 
 # Options de la fenêtre
-windows = {'width':500, 'height':500, 'background':"#004875"}
+windowOptions = {'width':800, 'height':600, 'background':"#004875"}
 
-# SETUP :
-app = tk.Tk()
-canvas = tk.Canvas(app, width = windows['width'], height = windows['height'], background = windows['background'], relief = 'raised')
-canvas.pack()
+# SETUP : ---------------------------------------------
+window = Tk()
+window.title('Tool : Image to PDF')
+window.iconbitmap("./assets/logo_alligator_news_ico.ico")
+window.config(background=windowOptions['background'])
+window.geometry(str(windowOptions['width']) + "x" + str(windowOptions['height']))
+window.minsize(480, 500)
+####### ---------------------------------------------
 
-label1 = tk.Label(app, text='Outil de convertion\n~ Image(s) -> PDF ~', background='#C8C8C8', font=('Ink Free', 30, 'bold'))
-canvas.create_window(windows['width']/2, windows['height']/6, window=label1)
+#Création de la "boîte" frame
+canvas = Frame(window, background = windowOptions['background'])
+####### ---------------------------------------------
 
-getFileButton = tk.Button(text="        Fichier(s)        ", command=getFiles, background='#E8927C', fg='black', font=('Ebrima', 14, 'bold'))
-canvas.create_window(windows['width']/2, windows['height']/2.1, window=getFileButton)
+#Titre ---------------------------------------------
+titreFrame = Frame(canvas, background = windowOptions['background'])
 
-convertButton = tk.Button(text='   Convertion en PDF   ', command=convertToPdf, background='#0B8000', fg='black', font=('Ebrima', 14, 'bold'))
-canvas.create_window(windows['width']/2, windows['height']/1.6, window=convertButton)
+titre = Label(titreFrame, text='Outil de convertion\n~ Image(s) -> PDF ~', background='#C8C8C8', font=('Ink Free', 30, 'bold'), fg='#000')
+titre.pack(pady=windowOptions['height']/10)
+titreFrame.grid(row=0, column=0, sticky=S)
+####### ---------------------------------------------
 
-exitButton = tk.Button (app, text='   Quitter   ', command=exit, background='#CD010D', fg='white', font=('Ebrima', 16, 'bold'))
-canvas.create_window(windows['width']/2, windows['height']/1.1, window=exitButton)
+#Image ---------------------------------------------
+imageFrame = Frame(canvas, background = windowOptions['background'])
+width = 200
+height = 100
+image = PhotoImage(file="./assets/alli.png").zoom(1).subsample(4)
+imageCanvas = Canvas(imageFrame, width=width, height=height, background = windowOptions['background'], border=0, highlightthickness=0)
+imageCanvas.create_image(width/2, height/2, image=image)
+imageCanvas.pack(pady=windowOptions['height']/40)
+imageFrame.grid(row=1, column=0, sticky=W, pady=windowOptions['height']/50)
+####### ---------------------------------------------
 
-app.mainloop()
+#Boutons ---------------------------------------------
+butonsFrame = Frame(canvas, background = windowOptions['background'])
+
+getFileButton = Button(butonsFrame, text="        Fichier(s)        ", command=getFiles, background='#E8927C', fg='black', font=('Ebrima', 14, 'bold'))
+getFileButton.pack(pady=windowOptions['height']/20)
+convertButton = Button(butonsFrame, text='   Convertion en PDF   ', command=convertToPdf, background='#0B8000', fg='black', font=('Ebrima', 14, 'bold'))
+convertButton.pack(pady=windowOptions['height']/80)
+exitButton = Button (butonsFrame, text='   Quitter   ', command=exit, background='#CD010D', fg='white', font=('Ebrima', 16, 'bold'))
+exitButton.pack(pady=windowOptions['height']/10)
+butonsFrame.grid(row=2, column=0, sticky=S)
+####### ---------------------------------------------
+
+canvas.pack(expand=YES)
+window.mainloop()
