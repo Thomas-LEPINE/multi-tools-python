@@ -2,3 +2,4 @@
 
 # Ignoring directories :
 .vscode/
+__pycache__
