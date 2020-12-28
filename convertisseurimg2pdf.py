@@ -58,7 +58,7 @@ window.title('Tool : Image to PDF')
 window.iconbitmap("./assets/logo_multi_tools.ico")
 window.config(background=windowOptions['background'])
 window.geometry(str(windowOptions['width']) + "x" + str(windowOptions['height']))
-window.minsize(800, 500)
+window.minsize(880, 500)
 ####### ---------------------------------------------
 
 #Création de la "boîte" frame
