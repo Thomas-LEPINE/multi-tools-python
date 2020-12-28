@@ -6,8 +6,13 @@ from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import *
 from PIL import Image
+import sys
 
 imageList = []
+
+''' HELP : '''
+def error(messageError="Erreur rencontrée"):
+    messagebox.showinfo(title="Erreur", icon = 'error' , message=messageError)
 
 ''' Récupère le/les fichiers : '''
 def getFiles ():
@@ -16,14 +21,21 @@ def getFiles ():
     lstFilePathImport = list(filePathImport) # Transformation de la liste de chaine en liste Python
     imageList = []
     for file in lstFilePathImport :
-        img = Image.open(file)
-        imageList.append(img.convert('RGB'))
+        try :
+            img = Image.open(file)
+        except :
+            error("Un fichier sélectionné n'est pas dans le format image ou n'est pas convertissable" + "\n\nFichier :\n" + str(file) + "\n\nMessage d'erreur du système : " + str(sys.exc_info()[0]))
+        else :
+            imageList.append(img.convert('RGB'))
 
 ''' Enregistre au format PDF '''
 def convertToPdf ():
     global imageList
-    filePathExport = filedialog.asksaveasfilename(defaultextension='.pdf', filetypes = [("Fichier PDF","*.pdf")])
-    imageList[0].save(filePathExport, save_all=True, append_images=imageList[1:]) # Transformation de la liste d'image en un pdf
+    if len(imageList) == 0 : # Aucun fichier n'a été selectionné
+        error("Aucune image n'a été selectionné\n\nMerci de selectionné une ou plusieurs images avant")
+    else :
+        filePathExport = filedialog.asksaveasfilename(defaultextension='.pdf', filetypes = [("Fichier PDF","*.pdf")])
+        imageList[0].save(filePathExport, save_all=True, append_images=imageList[1:]) # Transformation de la liste d'image en un pdf
 
 ''' Quitte l'application : '''
 def exit():
