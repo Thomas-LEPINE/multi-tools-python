@@ -11,7 +11,7 @@ import sys
 imageList = []
 windowImg2Pdf = None
 
-''' HELP : '''
+''' ERROR : '''
 def error(messageError="Erreur rencontrée"):
     messagebox.showinfo(title="Erreur", icon = 'error' , message=messageError)
 
@@ -137,7 +137,6 @@ def setup():
     canvas.pack(expand=YES)
     windowImg2Pdf.mainloop()
 
-def createWindowImgToPdf(mainAppToplevel):
-    global windowImg2Pdf
-    windowImg2Pdf = mainAppToplevel
-    setup() # Lancement de la fenêtre
+
+windowImg2Pdf = Tk()
+setup() # Lancement de la fenêtre
