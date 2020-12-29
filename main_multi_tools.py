@@ -8,9 +8,13 @@ from tkinter import *
 from PIL import Image
 import sys
 
+''' VARIABLES GLOBALES '''
 imageList = []
 mainWindow = None
 canvas = None
+windowsOptions = {'width': 1000, 'height': 600, 'background-menu': "#AAA", 'background-imgToPdf': "#996B6B"}
+''' ################# '''
+
 ''' ############ FONCTIONS ############### '''
 ''' ######### IMAGE TO PDF ######### '''
 ''' Récupère le/les fichiers : '''
@@ -74,56 +78,138 @@ def goToMenu():
     global mainWindow
     global canvas
     canvas.pack_forget()
-    setupMain()
+    setupMenu()
     
 ''' ########################### '''
 
 # SETUPS : ---------------------------------------------
 def firstSetup():
     # Options de la fenêtre :
-    # Bleu foncé : 004875 \\ Marron : 996B6B
-    windowOptions = {'width': 900, 'height': 550, 'background': "#AAA"}
-
+    global windowsOptions
     global mainWindow
     mainWindow.iconbitmap("./assets/logo_multi_tools.ico")
-    mainWindow.config(background=windowOptions['background'])
+    mainWindow.config(background=windowsOptions['background-menu'])
     mainWindow.geometry(
-        str(windowOptions['width']) + "x" + str(windowOptions['height']))
+        str(windowsOptions['width']) + "x" + str(windowsOptions['height']))
     mainWindow.minsize(880, 500)
     mainWindow.title('Multi tools - Menu')
-    setupMain()
+    setupMenu()
 
 
-def setupMain():
+def setupMenu():
     global mainWindow
     global canvas
+    global windowsOptions
+    mainWindow.config(background=windowsOptions['background-menu'])
     mainWindow.title('Multi tools - Menu')
-    # Bleu foncé : 004875 \\ Marron : 996B6B
-    windowOptions = {'width': 900, 'height': 550, 'background': "#AAA"}
     butonsOptionsMenu = {
         'policeButons': "Ebrima",
         'sizeButons': 15,
-        'textButon1': "        GO TO       ",
+        'textButon1': " Convertion \nimage(s) en PDF",
         'colorButon1': "#5C8199",
     }
     #Création de la "boîte" frame
-    canvas = Frame(mainWindow, background=windowOptions['background'])
-    butonsFrame = Frame(canvas, background=windowOptions['background'])
-    helpButton = Button(butonsFrame, text=butonsOptionsMenu['textButon1'], command=test, background=butonsOptionsMenu['colorButon1'], fg='black', font=(
-        butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
-    helpButton.grid(row=0, column=0, sticky=W)
-    testB = Button(butonsFrame, text=butonsOptionsMenu['textButon1'], command=test, background=butonsOptionsMenu['colorButon1'], fg='black', font=(
-        butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
-    testB.grid(row=0, column=2, sticky=W)
-    butonsFrame.pack()
-    canvas.pack(expand=YES)
+    canvas = Frame(mainWindow, background=windowsOptions['background-menu'])
+
+    ########### HEADER
+    header = Frame(canvas, background=windowsOptions['background-menu'])
+    width = windowsOptions['width']/4
+    height = windowsOptions['height']/4.5
+    #Image ---------------------------------------------
+    image = PhotoImage(file="./assets/logo_multi_tools.png").zoom(2).subsample(17)
+    imageCanvas = Canvas(header, width=width, height=height,
+                         background=windowsOptions['background-menu'], border=0, highlightthickness=0)
+    imageCanvas.create_image(width/2, height/2, image=image)
+    imageCanvas.grid(row=0, column=0, sticky=W)
+    ####### --------------------------------------------
+    #Titre ---------------------------------------------
+    titre = Label(header, text='  ~ MENU ~  ', background=windowsOptions['background-menu'], font=('Ink Free', 30, 'bold'), fg='#000')  # border=2, relief=SUNKEN
+    titre.grid(row=0, column=1, sticky=W)
+    ####### --------------------------------------------
+    #Image ---------------------------------------------
+    image2 = PhotoImage(file="./assets/logo_multi_tools.png").zoom(2).subsample(17)
+    imageCanvas2 = Canvas(header, width=width, height=height, background=windowsOptions['background-menu'], border=0, highlightthickness=0)
+    imageCanvas2.create_image(width/2, height/2, image=image2)
+    imageCanvas2.grid(row=0, column=2, sticky=W)
     ####### ---------------------------------------------
+    header.grid(row=0, column=0, sticky=N)
+    ############## ---------------------------------------------
+
+    ''' BOUTONS : '''
+    buttonsFrame = Frame(canvas, background=windowsOptions['background-menu'])
+
+    # Images To Pdf
+    butonImgToPDF = Frame(buttonsFrame, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKEN
+    imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(17)
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton.pack()
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf.pack()
+    butonImgToPDF.grid(row=0, column=0, sticky=W, padx=windowsOptions['width']/50)
+
+    # WIP
+    butonImgToPDF = Frame(buttonsFrame, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKEN
+    imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(17)
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton.pack()
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf.pack()
+    butonImgToPDF.grid(row=0, column=1, sticky=W, padx=windowsOptions['width']/50)
+
+    # WIP
+    butonImgToPDF = Frame(buttonsFrame, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKEN
+    imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(17)
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton.pack()
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf.pack()
+    butonImgToPDF.grid(row=0, column=2, sticky=W, padx=windowsOptions['width']/50)
+
+    # WIP
+    butonImgToPDF = Frame(buttonsFrame, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKEN
+    imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(17)
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton.pack()
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf.pack()
+    butonImgToPDF.grid(row=0, column=3, sticky=W, padx=windowsOptions['width']/50)
+
+    # WIP
+    butonImgToPDF = Frame(buttonsFrame, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKEN
+    imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(17)
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton.pack()
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf.pack()
+    butonImgToPDF.grid(row=0, column=4, sticky=W, padx=windowsOptions['width']/50)
+
+    # WIP
+    butonImgToPDF = Frame(buttonsFrame, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKEN
+    imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(17)
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton.pack()
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf.pack()
+    butonImgToPDF.grid(row=1, column=0, sticky=W, padx=windowsOptions['width']/50, pady=(windowsOptions['height']/20, 0))
+
+    buttonsFrame.grid(row=1, column=0, sticky=W, pady=windowsOptions['height']/8)
+    ''' ####### '''
+
+    ########### FOOTER
+    footer = Frame(canvas, background=windowsOptions['background-menu']) # , bd=1, relief=SUNKENs
+    labelFooter = Label(footer, text="Powered by Thomas Lépine (thomas.lep4@gmail.com)", background=windowsOptions['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], 10, 'bold'), justify='right')
+    labelFooter.pack(anchor=SE)
+    footer.grid(row=2, column=0, sticky=SE)
+    ############## ---------------------------------------------
+    canvas.pack(expand=YES)
     mainWindow.mainloop()
 
 
 def setupImgToPDF():
     global mainWindow
     global canvas
+    global windowsOptions
+    mainWindow.config(background=windowsOptions['background-imgToPdf'])
     mainWindow.title('Multi tools - Image(s) to PDF')
     # Options des bouttons :
     butonsOptionsImgToPDF = {
@@ -141,74 +227,67 @@ def setupImgToPDF():
         'colorButonExit': "#E55C5C",
     }
 
-    # Options de la fenêtre :
-    # Bleu foncé : 004875 \\ Marron : 996B6B
-    windowOptionsImgToPDF = {'width': 900,
-                             'height': 550, 'background': "#996B6B"}
-
     #Création de la "boîte" frame
-    canvas = Frame(mainWindow, background=windowOptionsImgToPDF['background'])
+    canvas = Frame(mainWindow, background=windowsOptions['background-imgToPdf'])
     ####### ---------------------------------------------
 
     ########### HEADER
-    headerFrame = Frame(canvas, background=windowOptionsImgToPDF['background'])
-    width = 220
-    height = 210
+    header = Frame(canvas, background=windowsOptions['background-imgToPdf'])
+    width = windowsOptions['width']/4
+    height = windowsOptions['height']/4.5
     #Image ---------------------------------------------
-    image = PhotoImage(
-        file="./assets/logo_multi_tools.png").zoom(2).subsample(17)
-    imageCanvas = Canvas(headerFrame, width=width, height=height,
-                         background=windowOptionsImgToPDF['background'], border=0, highlightthickness=0)
+    image = PhotoImage(file="./assets/logo_multi_tools.png").zoom(2).subsample(17)
+    imageCanvas = Canvas(header, width=width, height=height,
+                         background=windowsOptions['background-imgToPdf'], border=0, highlightthickness=0)
     imageCanvas.create_image(width/2, height/2, image=image)
     imageCanvas.grid(row=0, column=0, sticky=W)
     ####### --------------------------------------------
     #Titre ---------------------------------------------
-    titre = Label(headerFrame, text=' Outil de convertion \n  ~ Image(s) -> PDF ~  ',
-                  background=windowOptionsImgToPDF['background'], font=('Ink Free', 30, 'bold'), fg='#000')  # border=2, relief=SUNKEN
+    titre = Label(header, text=' Outil de convertion \n  ~ Image(s) -> PDF ~  ',
+                  background=windowsOptions['background-imgToPdf'], font=('Ink Free', 30, 'bold'), fg='#000')  # border=2, relief=SUNKEN
     titre.grid(row=0, column=1, sticky=W)
     ####### --------------------------------------------
     #Image ---------------------------------------------
     image2 = PhotoImage(file="./assets/logo_img2pdf.png").zoom(2).subsample(17)
-    imageCanvas2 = Canvas(headerFrame, width=width, height=height,
-                          background=windowOptionsImgToPDF['background'], border=0, highlightthickness=0)
+    imageCanvas2 = Canvas(header, width=width, height=height, background=windowsOptions['background-imgToPdf'], border=0, highlightthickness=0)
     imageCanvas2.create_image(width/2, height/2, image=image2)
     imageCanvas2.grid(row=0, column=2, sticky=W)
     ####### ---------------------------------------------
-    headerFrame.grid(row=0, column=0, sticky=W)
+    header.grid(row=0, column=0, sticky=W)
     ############## ---------------------------------------------
 
     #Boutons ---------------------------------------------
-    butonsFrame = Frame(canvas, background=windowOptionsImgToPDF['background'])
+    buttonsFrame = Frame(canvas, background=windowsOptions['background-imgToPdf'])
     # ---
-    getFileButton = Button(butonsFrame, text=butonsOptionsImgToPDF['textButon1'], command=getFiles, background=butonsOptionsImgToPDF['colorButon1'], font=(
+    getFileButton = Button(buttonsFrame, text=butonsOptionsImgToPDF['textButon1'], command=getFiles, background=butonsOptionsImgToPDF['colorButon1'], font=(
         butonsOptionsImgToPDF['policeButons'], butonsOptionsImgToPDF['sizeButons'], 'bold'), fg='black')
-    getFileButton.pack(pady=windowOptionsImgToPDF['height']/20)
-    convertButton = Button(butonsFrame, text=butonsOptionsImgToPDF['textButon2'], command=convertToPdf, background=butonsOptionsImgToPDF['colorButon2'], fg='black', font=(
+    getFileButton.pack(pady=windowsOptions['height']/20)
+    convertButton = Button(buttonsFrame, text=butonsOptionsImgToPDF['textButon2'], command=convertToPdf, background=butonsOptionsImgToPDF['colorButon2'], fg='black', font=(
         butonsOptionsImgToPDF['policeButons'], butonsOptionsImgToPDF['sizeButons'], 'bold'))
-    convertButton.pack(pady=windowOptionsImgToPDF['height']/80)
+    convertButton.pack(pady=windowsOptions['height']/80)
     # ---
     bottomButonsFrame = Frame(
-        butonsFrame, background=windowOptionsImgToPDF['background'])
+        buttonsFrame, background=windowsOptions['background-imgToPdf'])
     helpButton = Button(bottomButonsFrame, text=butonsOptionsImgToPDF['textButonHelp'], command=helpImgToPdf, background=butonsOptionsImgToPDF['colorButonHelp'], fg='black', font=(
         butonsOptionsImgToPDF['policeButons'], butonsOptionsImgToPDF['sizeButons'], 'bold'))
     helpButton.grid(row=0, column=0, sticky=W)
 
     espaceG = Label(bottomButonsFrame, text='              ',
-                    background=windowOptionsImgToPDF['background'])
+                    background=windowsOptions['background-imgToPdf'])
     espaceG.grid(row=0, column=1, sticky=W)
 
     backMenuButton = Button (bottomButonsFrame, text=butonsOptionsImgToPDF['textButonMenu'], command=goToMenu, background=butonsOptionsImgToPDF['colorButonMenu'], fg='black', font=(butonsOptionsImgToPDF['policeButons'], butonsOptionsImgToPDF['sizeButons'], 'bold'))
     backMenuButton.grid(row=0, column=2, sticky=W)
 
-    espaceD = Label(bottomButonsFrame, text='              ', background = windowOptionsImgToPDF['background'])
+    espaceD = Label(bottomButonsFrame, text='              ', background = windowsOptions['background-imgToPdf'])
     espaceD.grid(row=0, column=3, sticky=W)
 
     exitButton = Button(bottomButonsFrame, text=butonsOptionsImgToPDF['textButonExit'], command=exit, background=butonsOptionsImgToPDF['colorButonExit'], fg='black', font=(
         butonsOptionsImgToPDF['policeButons'], butonsOptionsImgToPDF['sizeButons'], 'bold'))
     exitButton.grid(row=0, column=4, sticky=W)
-    bottomButonsFrame.pack(pady=windowOptionsImgToPDF['height']/15)
+    bottomButonsFrame.pack(pady=windowsOptions['height']/15)
 
-    butonsFrame.grid(row=2, column=0, sticky=S)
+    buttonsFrame.grid(row=2, column=0, sticky=S)
     ####### ---------------------------------------------
 
     canvas.pack(expand=YES)
