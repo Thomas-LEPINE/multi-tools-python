@@ -119,8 +119,13 @@ def setupMenu():
     butonsOptionsMenu = {
         'policeButons': "Ebrima",
         'sizeButons': 15,
-        'textButon1': " Convertion \nimage(s) en PDF",
-        'colorButon1': "#5C8199",
+        'textButonImgToPdf': " Convertion \nimage(s) en PDF",
+        'colorButonImgToPdf': "#5C8199",
+        'textButonCompressionImg': " Compression \nimage(s)",
+        'colorButonCompressionImg': "#5C8199",
+
+        'textButonWip': " WIP ",
+        'colorButonWip': "#ccc",
     }
     #Création de la "boîte" frame
     canvas = Frame(MAIN_WINDOW, background=WINDOWS_OPTIONS['background-menu'])
@@ -153,92 +158,92 @@ def setupMenu():
     buttonsFrame = Frame(canvas, background=WINDOWS_OPTIONS['background-menu'])
 
     # Images To Pdf
-    butonImgToPDF = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
+    butonImgToPDF = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu'])
     imageButtonImgToPdf = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(12)
-    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButon1'])
+    imgToPdfButton = Button(butonImgToPDF, image=imageButtonImgToPdf, command=test, background=butonsOptionsMenu['colorButonImgToPdf'])
     imgToPdfButton.pack()
-    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonImgToPdf = Label(butonImgToPDF, text=butonsOptionsMenu['textButonImgToPdf'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonImgToPdf.pack()
     butonImgToPDF.grid(row=0, column=0, sticky=W, padx=WINDOWS_OPTIONS['width']/50)
 
-    # WIP
-    butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
-    imageButtonWIP = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
-    imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
-    labelButtonWIP.pack()
-    butonWIP.grid(row=0, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/50)
+    # Compression Images
+    butonCompressionImages = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu'])
+    imageButtonCompressionImages = PhotoImage(file="./assets/logo_compression_images.png").zoom(1).subsample(12)
+    imageToCompressionImagesButton = Button(butonCompressionImages, image=imageButtonCompressionImages, command=test, background=butonsOptionsMenu['colorButonCompressionImg'])
+    imageToCompressionImagesButton.pack()
+    labelButtonCompressionImages = Label(butonCompressionImages, text=butonsOptionsMenu['textButonCompressionImg'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonCompressionImages.pack()
+    butonCompressionImages.grid(row=0, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/50)
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=0, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/50)
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=0, column=3, sticky=W, padx=WINDOWS_OPTIONS['width']/50)
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/logo_img2pdf.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=0, column=4, sticky=W, padx=WINDOWS_OPTIONS['width']/50)
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/cle_molette.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=1, column=0, sticky=W, padx=WINDOWS_OPTIONS['width']/50, pady=(WINDOWS_OPTIONS['height']/15, 0))
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/cle_molette.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=1, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/50, pady=(WINDOWS_OPTIONS['height']/15, 0))
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/cle_molette.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=1, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/50, pady=(WINDOWS_OPTIONS['height']/15, 0))
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/cle_molette.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=1, column=3, sticky=W, padx=WINDOWS_OPTIONS['width']/50, pady=(WINDOWS_OPTIONS['height']/15, 0))
 
     # WIP
     butonWIP = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-menu']) # , bd=1, relief=SUNKEN
     imageButtonWIP = PhotoImage(file="./assets/cle_molette.png").zoom(1).subsample(12)
-    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButon1'])
+    imageToWIPButton = Button(butonWIP, image=imageButtonWIP, command=test, background=butonsOptionsMenu['colorButonWip'])
     imageToWIPButton.pack()
-    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButon1'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
+    labelButtonWIP = Label(butonWIP, text=butonsOptionsMenu['textButonWip'] , background=WINDOWS_OPTIONS['background-menu'], fg='black', font=(butonsOptionsMenu['policeButons'], butonsOptionsMenu['sizeButons'], 'bold'))
     labelButtonWIP.pack()
     butonWIP.grid(row=1, column=4, sticky=W, padx=WINDOWS_OPTIONS['width']/50, pady=(WINDOWS_OPTIONS['height']/15, 0))
 
