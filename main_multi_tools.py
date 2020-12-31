@@ -38,14 +38,16 @@ def getFilesImages():
         parent=MAIN_WINDOW, title='Choisissez un/des fichier(s)')
     # Transformation de la liste de chaine en liste Python
     lstFilePathImport = list(filePathImport)
-    image_list = []
+    image_list = [] # Réinitialisation de la liste
     for file in lstFilePathImport:
-        try:
+        try :
             img = Image.open(file)
-        except:
+        except :
+            image_list = [] # Réinitialisation de la liste
             error("Un fichier sélectionné n'est pas dans le format image ou n'est pas convertissable" +
                   "\n\nFichier :\n" + str(file) + "\n\nMessage d'erreur du système : " + str(sys.exc_info()[0]))
-        else:
+            break
+        else :
             image_list.append(img.convert('RGB'))
 
 ''' Enregistre au format PDF '''
@@ -104,7 +106,7 @@ def firstSetup():
     MAIN_WINDOW.config(background=WINDOWS_OPTIONS['background-menu'])
     MAIN_WINDOW.geometry(
         str(WINDOWS_OPTIONS['width']) + "x" + str(WINDOWS_OPTIONS['height']))
-    MAIN_WINDOW.minsize(880, 500)
+    MAIN_WINDOW.minsize(1000, 600)
     MAIN_WINDOW.title('Multi tools - Menu')
     setupMenu()
 
