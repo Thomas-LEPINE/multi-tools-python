@@ -40,6 +40,23 @@ def getFilesImagesAndName():
             image_list.append(file.split("/")[-1])
             image_list.append(img)
 
+''' Calcule taille image '''
+def calculTailleImage(image, option_resize) :
+    """ Calcul des dimenssions de la nouvelle image """
+    size = [image.size[0], image.size[1]] # Récuère les dimensions de l'image
+    if option_resize <= 1 :
+        # Redimensionne par ratio
+        size[0] = size[0] * option_resize
+        size[1] = size[1] * option_resize
+    elif option_resize == 720 and size[1] > 720 :
+        # On bloque la hauteur
+        size[0] = 720 * size[0] / size[1] # Calcul de la largeur pour garder les proportions de l'image
+        size[1] = 720
+    elif option_resize == 1000  and size[0] > 1000:
+        # On bloque la largeur
+        size[1] = 1000 * size[1] / size[0] # Calcul de la largeur pour garder les proportions de l'image
+        size[0] = 1000
+    return (size[0], size[1])
 
 ''' Compression des images '''
 def compressionImg(liste_options) :
@@ -48,21 +65,35 @@ def compressionImg(liste_options) :
         error("Aucune image n'a été selectionné\n\nMerci de selectionner une ou plusieurs images avant")
     else :
         directoryPathExport = filedialog.askdirectory()
-        for i in range(0, len(image_list), 2):
-            # On sépare le nom de l'image de son extension actuelle
-            image_name = image_list[i].split('.')
-            if image_name[1] != 'png' :
-                image_name[0] = image_name[0] + ".jpg"  # Nom de l'image finale"
-                newImage = image_list[i+1].convert("RGB", palette=Image.WEB) # Encodage de l'image
-                newImage.thumbnail((image_list[i+1].size[0], image_list[i+1].size[1]), Image.ANTIALIAS) # BILINEAR = qualité ok- / BICBUIC = qualité ok+ / ANTIALIAS = bonne qualité
-                newImage.save(directoryPathExport + '/' + image_name[0], format="jpeg") #On enregistre l'image au bon format
-                image_list[i+1].close()  # libère les ressources systèmes                
-            else : # Pour les images de type png (sans fond)
-                image_name[0] = image_name[0] + ".png"  # Nom de l'image finale
-                newImage = image_list[i+1].convert("RGBA", palette=Image.WEB) # Encodage de l'image
-                newImage.thumbnail((image_list[i+1].size[0], image_list[i+1].size[1]), Image.BICUBIC) # BILINEAR = qualité ok- / BICUBIC = qualité ok+ / ANTIALIAS = bonne qualité
-                newImage.save(directoryPathExport + '/' + image_name[0], format="png") #On enregistre l'image au bon format
-                image_list[i+1].close()  # libère les ressources systèmes
+        if directoryPathExport == '' :
+             error("Aucun dossier de destination n'a été selectionné")
+        else :
+            for i in range(0, len(image_list), 2):
+                # On sépare le nom de l'image de son extension actuelle
+                image_name = image_list[i].split('.')
+                
+                # Calcul des dimenssions de la nouvelle image
+                size = calculTailleImage(image_list[i+1], liste_options['resize'])
+
+                if liste_options['format'] == 'default' :
+                    if image_name[1] != 'png' :
+                        image_name[0] = image_name[0] + ".jpg"  # Nom de l'image finale"
+                        newImage = image_list[i+1].convert("RGB", palette=Image.WEB) # Encodage de l'image
+                        newImage.thumbnail(size, liste_options['quality'])
+                        newImage.save(directoryPathExport + '/' + image_name[0], format="jpeg") #On enregistre l'image au bon format
+                        # image_list[i+1].close()  # libère les ressources systèmes de cette image
+                    else : # Pour les images de type png (sans fond)
+                        image_name[0] = image_name[0] + ".png"  # Nom de l'image finale
+                        newImage = image_list[i+1].convert("RGBA", palette=Image.WEB) # Encodage de l'image
+                        newImage.thumbnail(size, liste_options['quality'])
+                        newImage.save(directoryPathExport + '/' + image_name[0], format="png") #On enregistre l'image au bon format
+                        # image_list[i+1].close()  # libère les ressources systèmes de cette image
+                else :
+                    image_name[0] = image_name[0] + "." + liste_options['format']  # Nom de l'image finale"
+                    newImage = image_list[i+1].convert("RGB", palette=Image.WEB) # Encodage de l'image
+                    newImage.thumbnail(size, liste_options['quality'])
+                    newImage.save(directoryPathExport + '/' + image_name[0], format=liste_options['format']) #On enregistre l'image au bon format
+                    # image_list[i+1].close()  # libère les ressources systèmes de cette image
                 
 ''' ERROR : '''
 def error(messageError="Erreur rencontrée"):
@@ -170,7 +201,7 @@ def setupCompressionImg():
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
     comboResize.current(0) # Met la première valeure par défaut
     comboResize.grid(row=1, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
-    comboResize.bind("<<ComboboxSelected>>", lambda r : print(comboResize.get()))
+    comboResize.bind("<<ComboboxSelected>>", lambda r : setCompressionOptions(compression_options, resize_options=resize_options[comboResize.get()]))
     # COMBO BOX Format
     labelTop3 = Label(comboBoxesFrame, text = "Format : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop3.grid(row=0, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
@@ -178,7 +209,7 @@ def setupCompressionImg():
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
     comboFormat.current(0) # Met la première valeure par défaut
     comboFormat.grid(row=1, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
-    comboFormat.bind("<<ComboboxSelected>>", lambda f : print(comboFormat.get()))
+    comboFormat.bind("<<ComboboxSelected>>", lambda f : setCompressionOptions(compression_options, format_options=format_options[comboFormat.get()]))
     comboBoxesFrame.pack(pady=(WINDOWS_OPTIONS['height']/30, WINDOWS_OPTIONS['height']/20))
 
     convertButton = Button(buttonsFrame, text=butonsOptionsCompressionImg['textButon2'], command=lambda: compressionImg(compression_options), background=butonsOptionsCompressionImg['colorButon2'], fg='black', font=(
