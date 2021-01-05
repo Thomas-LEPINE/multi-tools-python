@@ -90,7 +90,10 @@ def compressionImg(liste_options) :
                         # image_list[i+1].close()  # libère les ressources systèmes de cette image
                 else :
                     image_name[0] = image_name[0] + "." + liste_options['format']  # Nom de l'image finale"
-                    newImage = image_list[i+1].convert("RGB", palette=Image.WEB) # Encodage de l'image
+                    if liste_options['format'] == 'png' :
+                        newImage = image_list[i+1].convert("RGBA", palette=Image.WEB) # Encodage de l'image
+                    else :
+                        newImage = image_list[i+1].convert("RGB", palette=Image.WEB) # Encodage de l'image
                     newImage.thumbnail(size, liste_options['quality'])
                     newImage.save(directoryPathExport + '/' + image_name[0], format=liste_options['format']) #On enregistre l'image au bon format
                     # image_list[i+1].close()  # libère les ressources systèmes de cette image
