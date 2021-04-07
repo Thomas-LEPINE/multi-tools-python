@@ -7,7 +7,7 @@ __author__ = ("Thomas LÉPINE")
 __contact__ = ("thomas.lep4@gmail.com")
 __version__ = "1.0.0"
 __copyright__ = "Thomas Lépine"
-__date__ = "2020/12"
+__date__ = "2021/04"
 
 from tkinter import *
 from tkinter import filedialog, messagebox, ttk
@@ -20,7 +20,16 @@ MAIN_WINDOW = None
 WINDOWS_OPTIONS = {'width': 1000, 'height': 680, 'background-compressionImg': "#5C8199"}
 image_list = []
 canvas = None
-''' ################# '''
+
+''' Quitte l'application : '''
+def exit():
+    global MAIN_WINDOW
+    msgBox = messagebox.askquestion(
+        'Quitter l\'application', 'Êtes-vous sûr et certain de vouloir quitter l\'application ?', icon='warning')
+    if msgBox == 'yes':
+       MAIN_WINDOW.destroy()
+       MAIN_WINDOW = None
+
 ''' ######### COMPRESSION DES IMAGES ######### '''
 ''' Récupère le/les fichiers : '''
 def getFilesImagesAndName():
@@ -44,23 +53,32 @@ def getFilesImagesAndName():
 def calculTailleImage(image, option_resize) :
     """ Calcul des dimenssions de la nouvelle image """
     size = [image.size[0], image.size[1]] # Récuère les dimensions de l'image
-    if option_resize <= 1 :
+    if option_resize <= 1:
         # Redimensionne par ratio
         size[0] = size[0] * option_resize
         size[1] = size[1] * option_resize
-    elif option_resize == 720 and size[1] > 720 :
+    elif option_resize == 720 and size[1] > 720:
         # On bloque la hauteur
         size[0] = 720 * size[0] / size[1] # Calcul de la largeur pour garder les proportions de l'image
         size[1] = 720
-    elif option_resize == 1000  and size[0] > 1000:
+    elif option_resize == 1080 and size[1] > 1080:
+        # On bloque la hauteur
+        size[0] = 1080 * size[0] / size[1] # Calcul de la largeur pour garder les proportions de l'image
+        size[1] = 1080
+    elif option_resize == 1000 and size[0] > 1000:
         # On bloque la largeur
         size[1] = 1000 * size[1] / size[0] # Calcul de la largeur pour garder les proportions de l'image
         size[0] = 1000
-    return (size[0], size[1])
+    elif option_resize == 1920 and size[0] > 1920:
+        # On bloque la largeur
+        size[1] = 1920 * size[1] / size[0] # Calcul de la largeur pour garder les proportions de l'image
+        size[0] = 1920
+    return(size[0], size[1])
 
 ''' Compression des images '''
 def compressionImg(liste_options) :
     global image_list
+    # la liste image_list contient le nom de l'image suivi de sont de l'objet de la classe PIL associé
     if len(image_list) == 0:  # Aucun fichier n'a été selectionné
         error("Aucune image n'a été selectionné\n\nMerci de selectionner une ou plusieurs images avant")
     else :
@@ -95,8 +113,11 @@ def compressionImg(liste_options) :
                     else :
                         newImage = image_list[i+1].convert("RGB", palette=Image.WEB) # Encodage de l'image
                     newImage.thumbnail(size, liste_options['quality'])
-                    newImage.save(directoryPathExport + '/' + image_name[0], format=liste_options['format']) #On enregistre l'image au bon format
+                    newImage.save(directoryPathExport + '/' + image_name[0], format="jpeg") #On enregistre l'image au bon format
                     # image_list[i+1].close()  # libère les ressources systèmes de cette image
+            # Ouverture d'un pop-up pour avertir que la tâche est terminée
+            msgFinTache = messagebox.showinfo(icon='info', title='Tâche terminée',
+                message='Les images sélectionnées ont été convertis')
                 
 ''' ERROR : '''
 def error(messageError="Erreur rencontrée"):
@@ -111,21 +132,20 @@ def setCompressionOptions(compression_options, quality_options = None, resize_op
         compression_options['resize'] = resize_options
     elif format_options != None :
         compression_options['format'] = format_options
-    
 
 ''' HELP : '''
 def helpCompressionImg():
-    messagebox.showinfo(title="Aide", icon='question', message="Ce programme permet de compresser des images.\n\n1 : Chargez la ou les images souhaitées à l'aide du boutton \"Fichier(s)\".\n\n2 : Cliquez sur \"Compresser\" et selectionnez le dossier dans lequel vous souhaitez enregistrer la ou les images.\n\nEt voilà ! Vous pouvez ensuite quitter l'application (n'hésitez pas à aller vérifier que l'enregistrement a bien fontionné !)\n\n\nProgramme développé par Thomas Lépine (thomas.lep4@gmail.com)")
+    messagebox.showinfo(title="Aide", icon='question', message="Ce programme permet de compresser des images.\n\n1 : Chargez la ou les images souhaitées à l'aide du boutton \"Image(s)\".\n\n2 : Cliquez sur \"Compresser\" et selectionnez le dossier dans lequel vous souhaitez enregistrer la ou les images.\n\nEt voilà ! Vous pouvez ensuite quitter l'application (n'hésitez pas à aller vérifier que l'enregistrement a bien fontionné !)\n\n\nProgramme développé par Thomas Lépine (thomas.lep4@gmail.com)")
 
 def setupCompressionImg():
     global MAIN_WINDOW
     global canvas
     
-    quality_options = {'Très bonne':Image.LANCZOS, 'Bonne':Image.BICUBIC, 'Égale':Image.BOX, 'Moyenne':Image.HAMMING, 'Faible':Image.BILINEAR}
+    quality_options = {'Bonne +':Image.LANCZOS, 'Bonne':Image.BOX, 'Moyenne':Image.BICUBIC, 'Faible':Image.BILINEAR}
     list_combox_quality = []
     for key in quality_options.keys():
         list_combox_quality.append(key)
-    resize_options={'1:1':1, '1:2':1/2, '1:3':1/3, '1:4':1/4, 'Hauteur maximum : 720px':720, 'Largeur max : 1000px':1000}
+    resize_options={'1:1':1, '1:2':1/2, '1:3':1/3, '1:4':1/4, 'Hauteur maximum : 720px':720, 'Hauteur maximum : 1080px':1080, 'Largeur max : 1000px':1000, 'Largeur max : 1920px':1920}
     list_combox_resize = []
     for key in resize_options.keys():
         list_combox_resize.append(key)
@@ -134,7 +154,7 @@ def setupCompressionImg():
     for key in format_options.keys():
         list_combox_format.append(key)
     # VALEURS PAR DEFAULT :
-    compression_options = {'quality':quality_options['Très bonne'], 'resize':resize_options['1:1'], 'format':format_options['Default']}
+    compression_options = {'quality':quality_options['Bonne'], 'resize':resize_options['Hauteur maximum : 720px'], 'format':format_options['Default']}
 
     MAIN_WINDOW.config(background=WINDOWS_OPTIONS['background-compressionImg'])
     MAIN_WINDOW.title('Multi tools - Compression d\'image(s)')
@@ -142,9 +162,9 @@ def setupCompressionImg():
     butonsOptionsCompressionImg = {
         'policeButons': "Ebrima",
         'sizeButons': 15,
-        'textButon1': "        Fichier(s)        ",
+        'textButon1': "        Image(s)        ",
         'colorButon1': "#E5B5A1",
-        'textButon2': "  Convertir en PDF  ",
+        'textButon2': "       Compresser       ",
         'colorButon2': "#998B54",
         'textButonHelp': "     Aide     ",
         'colorButonHelp': "#CC8566",
@@ -169,7 +189,7 @@ def setupCompressionImg():
     imageCanvas.create_image(width/2, height/2, image=image)
     imageCanvas.grid(row=0, column=0, sticky=W)
 
-    titre = Label(header, text='  ~ Outil de compression d\'image(s) ~ ',
+    titre = Label(header, text='  ~ Outil de compression d\'image(s) ~  ',
                   background=WINDOWS_OPTIONS['background-compressionImg'], font=('Ink Free', 30, 'bold'), fg='#000')  # border=2, relief=SUNKEN
     titre.grid(row=0, column=1, sticky=W)
 
@@ -192,29 +212,30 @@ def setupCompressionImg():
     # COMBO BOX Qualité
     labelTop1 = Label(comboBoxesFrame, text = "Qualité : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop1.grid(row=0, column=0, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
-    comboQuality = ttk.Combobox(comboBoxesFrame, values=list_combox_quality, 
+    comboQuality = ttk.Combobox(comboBoxesFrame, values=list_combox_quality, width=int(WINDOWS_OPTIONS['width']/40),
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
-    comboQuality.current(0) # Met la première valeure par défaut
+    comboQuality.current(1) # Met la première valeure par défaut
     comboQuality.grid(row=1, column=0, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboQuality.bind("<<ComboboxSelected>>", lambda q: setCompressionOptions(compression_options, quality_options=quality_options[comboQuality.get()]))
     # COMBO BOX Resize
     labelTop2 = Label(comboBoxesFrame, text = "Redimensionnement : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop2.grid(row=0, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
-    comboResize = ttk.Combobox(comboBoxesFrame, values=list_combox_resize, 
+    comboResize = ttk.Combobox(comboBoxesFrame, values=list_combox_resize, width=int(WINDOWS_OPTIONS['width']/40),
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
-    comboResize.current(0) # Met la première valeure par défaut
+    comboResize.current(4) # Met la première valeure par défaut
     comboResize.grid(row=1, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboResize.bind("<<ComboboxSelected>>", lambda r : setCompressionOptions(compression_options, resize_options=resize_options[comboResize.get()]))
     # COMBO BOX Format
     labelTop3 = Label(comboBoxesFrame, text = "Format : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop3.grid(row=0, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
-    comboFormat = ttk.Combobox(comboBoxesFrame, values=list_combox_format, 
+    comboFormat = ttk.Combobox(comboBoxesFrame, values=list_combox_format, width=int(WINDOWS_OPTIONS['width']/40),
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
     comboFormat.current(0) # Met la première valeure par défaut
     comboFormat.grid(row=1, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboFormat.bind("<<ComboboxSelected>>", lambda f : setCompressionOptions(compression_options, format_options=format_options[comboFormat.get()]))
     comboBoxesFrame.pack(pady=(WINDOWS_OPTIONS['height']/30, WINDOWS_OPTIONS['height']/20))
 
+    #Bouton convertion
     convertButton = Button(buttonsFrame, text=butonsOptionsCompressionImg['textButon2'], command=lambda: compressionImg(compression_options), background=butonsOptionsCompressionImg['colorButon2'], fg='black', font=(
         butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     convertButton.pack(pady=WINDOWS_OPTIONS['height']/80)
