@@ -9,15 +9,22 @@ __version__ = "1.0.0"
 __copyright__ = "Thomas Lépine"
 __date__ = "2021/04"
 
-from tkinter import *
-from tkinter import filedialog, messagebox, ttk
+try:
+    from tkinter import *
+    from tkinter import filedialog, messagebox, ttk
+except ImportError:
+    # pour python 2.x
+    from Tkinter import *
+    from Tkinter import filedialog, messagebox, ttk
 from PIL import Image # Librairie Pillow (traitement d'images) 
 ''' Docs : https://pillow.readthedocs.io/en/stable/reference/Image.html  https://pillow.readthedocs.io/en/stable/handbook/concepts.html#concept-modes '''
 import sys
+# import this
+# import antigravity
 
 ''' VARIABLES GLOBALES '''
 MAIN_WINDOW = None
-WINDOWS_OPTIONS = {'width': 1000, 'height': 680, 'background-compressionImg': "#5C8199"}
+WINDOWS_OPTIONS = {'width': 1000, 'height': 600, 'background-compressionImg': "#004875"}
 image_list = []
 canvas = None
 
@@ -137,10 +144,17 @@ def setCompressionOptions(compression_options, quality_options = None, resize_op
 def helpCompressionImg():
     messagebox.showinfo(title="Aide", icon='question', message="Ce programme permet de compresser des images.\n\n1 : Chargez la ou les images souhaitées à l'aide du boutton \"Image(s)\".\n\n2 : Cliquez sur \"Compresser\" et selectionnez le dossier dans lequel vous souhaitez enregistrer la ou les images.\n\nEt voilà ! Vous pouvez ensuite quitter l'application (n'hésitez pas à aller vérifier que l'enregistrement a bien fontionné !)\n\n\nProgramme développé par Thomas Lépine (thomas.lep4@gmail.com)")
 
-def setupCompressionImg():
+# Fenêtre
+def appCompressionImg():
     global MAIN_WINDOW
     global canvas
-    
+    MAIN_WINDOW.config(background=WINDOWS_OPTIONS['background-compressionImg'])
+    MAIN_WINDOW.title('Alligator tool - Compression d\'image(s)')
+    MAIN_WINDOW.iconbitmap("./assets/logo_alligator_news_ico.ico")
+
+    MAIN_WINDOW.geometry(str(WINDOWS_OPTIONS['width']) + "x" + str(WINDOWS_OPTIONS['height']))
+    MAIN_WINDOW.minsize(980, 590)
+
     quality_options = {'Bonne +':Image.LANCZOS, 'Bonne':Image.BOX, 'Moyenne':Image.BICUBIC, 'Faible':Image.BILINEAR}
     list_combox_quality = []
     for key in quality_options.keys():
@@ -156,23 +170,21 @@ def setupCompressionImg():
     # VALEURS PAR DEFAULT :
     compression_options = {'quality':quality_options['Bonne'], 'resize':resize_options['Hauteur maximum : 720px'], 'format':format_options['Default']}
 
-    MAIN_WINDOW.config(background=WINDOWS_OPTIONS['background-compressionImg'])
-    MAIN_WINDOW.title('Multi tools - Compression d\'image(s)')
-    MAIN_WINDOW.iconbitmap("./assets/logo_multi_tools.ico")
     # Options des bouttons :
     butonsOptionsCompressionImg = {
+        'couleurTextes' : '#FDF5E6',
         'policeButons': "Ebrima",
         'sizeButons': 15,
         'textButon1': "        Image(s)        ",
-        'colorButon1': "#E5B5A1",
+        'colorButon1': "#E8927C",
         'textButon2': "       Compresser       ",
-        'colorButon2': "#998B54",
+        'colorButon2': "#C2BF0A",
         'textButonHelp': "     Aide     ",
-        'colorButonHelp': "#CC8566",
+        'colorButonHelp': "#C27100",
         'textButonMenu': "    Menu    ",
         'colorButonMenu': "#666ECC",
         'textButonExit': "   Quitter   ",
-        'colorButonExit': "#E55CE3",
+        'colorButonExit': "#E71818",
     }
 
     #Création de la "boîte" frame
@@ -181,17 +193,17 @@ def setupCompressionImg():
 
     ########### HEADER
     header = Frame(canvas, background=WINDOWS_OPTIONS['background-compressionImg'])
-    width = WINDOWS_OPTIONS['width']/4
+    width = WINDOWS_OPTIONS['width']/8
     height = WINDOWS_OPTIONS['height']/4.5
 
-    image = PhotoImage(file="./assets/logo_multi_tools.png").zoom(2).subsample(17)
+    image = PhotoImage(file="./assets/logo_alligator_news.png").zoom(2).subsample(17)
     imageCanvas = Canvas(header, width=width, height=height,
                          background=WINDOWS_OPTIONS['background-compressionImg'], border=0, highlightthickness=0)
     imageCanvas.create_image(width/2, height/2, image=image)
     imageCanvas.grid(row=0, column=0, sticky=W)
 
     titre = Label(header, text='  ~ Outil de compression d\'image(s) ~  ',
-                  background=WINDOWS_OPTIONS['background-compressionImg'], font=('Ink Free', 30, 'bold'), fg='#000')  # border=2, relief=SUNKEN
+                  background=WINDOWS_OPTIONS['background-compressionImg'], font=('Ink Free', 28, 'bold'), fg='#FDF5E6')  # border=2, relief=SUNKEN
     titre.grid(row=0, column=1, sticky=W)
 
     image2 = PhotoImage(file="./assets/logo_compression_images.png").zoom(2).subsample(17)
@@ -211,7 +223,7 @@ def setupCompressionImg():
 
     comboBoxesFrame = Frame(buttonsFrame, background=WINDOWS_OPTIONS['background-compressionImg'])
     # COMBO BOX Qualité
-    labelTop1 = Label(comboBoxesFrame, text = "Qualité : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
+    labelTop1 = Label(comboBoxesFrame, text = "Qualité : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='#FDF5E6', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop1.grid(row=0, column=0, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboQuality = ttk.Combobox(comboBoxesFrame, values=list_combox_quality, width=int(WINDOWS_OPTIONS['width']/40),
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
@@ -219,7 +231,7 @@ def setupCompressionImg():
     comboQuality.grid(row=1, column=0, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboQuality.bind("<<ComboboxSelected>>", lambda q: setCompressionOptions(compression_options, quality_options=quality_options[comboQuality.get()]))
     # COMBO BOX Resize
-    labelTop2 = Label(comboBoxesFrame, text = "Redimensionnement : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
+    labelTop2 = Label(comboBoxesFrame, text = "Redimensionnement : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='#FDF5E6', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop2.grid(row=0, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboResize = ttk.Combobox(comboBoxesFrame, values=list_combox_resize, width=int(WINDOWS_OPTIONS['width']/40),
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
@@ -227,7 +239,7 @@ def setupCompressionImg():
     comboResize.grid(row=1, column=1, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboResize.bind("<<ComboboxSelected>>", lambda r : setCompressionOptions(compression_options, resize_options=resize_options[comboResize.get()]))
     # COMBO BOX Format
-    labelTop3 = Label(comboBoxesFrame, text = "Format : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
+    labelTop3 = Label(comboBoxesFrame, text = "Format : ", bg=WINDOWS_OPTIONS['background-compressionImg'], fg='#FDF5E6', font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     labelTop3.grid(row=0, column=2, sticky=W, padx=WINDOWS_OPTIONS['width']/22)
     comboFormat = ttk.Combobox(comboBoxesFrame, values=list_combox_format, width=int(WINDOWS_OPTIONS['width']/40),
                                     state="readonly", font=(butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons']-5))
@@ -258,7 +270,7 @@ def setupCompressionImg():
     exitButton = Button(bottomButonsFrame, text=butonsOptionsCompressionImg['textButonExit'], command=exit, background=butonsOptionsCompressionImg['colorButonExit'], fg='black', font=(
         butonsOptionsCompressionImg['policeButons'], butonsOptionsCompressionImg['sizeButons'], 'bold'))
     exitButton.grid(row=0, column=4, sticky=W)
-    bottomButonsFrame.pack(pady=(WINDOWS_OPTIONS['height']/5, 0))
+    bottomButonsFrame.pack(pady=(WINDOWS_OPTIONS['height']/10, 0))
 
     buttonsFrame.grid(row=2, column=0, sticky=S, pady=(WINDOWS_OPTIONS['height']/15, 0))
     ####### ---------------------------------------------
@@ -267,11 +279,16 @@ def setupCompressionImg():
     footer = Frame(canvas, background = WINDOWS_OPTIONS['background-compressionImg']) # , bd=1, relief=SUNKEN
     labelFooter = Label(footer, text="Powered by Thomas Lépine (thomas.lep4@gmail.com)", background = WINDOWS_OPTIONS['background-compressionImg'], fg='black', font=(butonsOptionsCompressionImg['policeButons'], 10, 'italic'), justify='right')
     labelFooter.pack(anchor=SE)
-    footer.grid(row=3, column=0, sticky=SE, pady=((WINDOWS_OPTIONS['height']/10, 0)))
+    footer.grid(row=3, column=0, sticky=SE, pady=((WINDOWS_OPTIONS['height']/30, 0)))
     ############## ---------------------------------------------
 
     canvas.pack(expand=YES)
     MAIN_WINDOW.mainloop()
 
-MAIN_WINDOW = Tk()
-setupCompressionImg()
+def startMenu():
+    global MAIN_WINDOW
+    MAIN_WINDOW = Tk()
+    appCompressionImg() # Lancement de la fenêtre
+
+# ----- START UP :
+startMenu() # Lancement du logiciel

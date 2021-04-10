@@ -3,3 +3,4 @@
 # Ignoring directories :
 .vscode/
 __pycache__
+resultat/
