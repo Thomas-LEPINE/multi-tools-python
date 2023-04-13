@@ -9,13 +9,8 @@ __version__ = "1.0.0"
 __copyright__ = "Thomas Lépine"
 __date__ = "2021/04"
 
-try:
-    from tkinter import *
-    from tkinter import filedialog, messagebox, ttk
-except ImportError:
-    # pour python 2.x
-    from Tkinter import *
-    from Tkinter import filedialog, messagebox, ttk
+from tkinter import *
+from tkinter import filedialog, messagebox, ttk
 from PIL import Image # Librairie Pillow (traitement d'images) 
 ''' Docs : https://pillow.readthedocs.io/en/stable/reference/Image.html  https://pillow.readthedocs.io/en/stable/handbook/concepts.html#concept-modes '''
 import sys
